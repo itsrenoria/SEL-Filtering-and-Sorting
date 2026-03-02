@@ -8,7 +8,7 @@
   "values": [
     "/*Add Stream Expressions in Sort Order to prioritize stream types below.*/[]",
     "/*Tier 1 Cached*/ cached(merge(library(streams),seadex(streams),type(streams,'debrid'),type(service(streams,'torbox'),'usenet'),message(type(streams,'usenet','stremio-usenet'),'includes','✅','🧝')))",
-    "/*Tier 2 Cached*/ merge(cache(type(streams, 'usenet')), type(streams, 'stremio-usenet', 'http', 'p2p'))",
+    "/*Tier 2 Cached*/ merge(cached(type(streams, 'usenet')), type(streams, 'stremio-usenet', 'http', 'p2p'))",
     "/*Tier 3 Uncached*/uncached(type(streams,'usenet'))",
     "/*Tier 4 Uncached*/uncached(type(streams,'debrid'))"
   ]
