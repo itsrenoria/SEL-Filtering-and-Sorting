@@ -5,7 +5,7 @@
     "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
     "source": "external",
     "author": "Tamtaro",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "category": "AIO",
     "serviceRequired": false,
     "inputs": [
@@ -811,6 +811,7 @@
             "description": "Choose the amount for the above language streams to bypass excluded SEL filters.",
             "type": "number",
             "required": false,
+            "default": 5,
             "constraints": {
               "min": 1,
               "max": 15,
@@ -1435,10 +1436,6 @@
       }
     ],
     "requiredStreamExpressions": [
-      {
-        "expression": "/*You're using Tamtaro's Complete SEL Setup. Pls don't disable this line. Will cause problems with your filtering*/ streams",
-        "enabled": true
-      },
       {
         "__if": "inputs.optionalFilters includes 4kRemux",
         "expression": "/*4k Remux Filter*/ negate(resolution(quality(streams,'BluRay REMUX'), '2160p'), streams)",
