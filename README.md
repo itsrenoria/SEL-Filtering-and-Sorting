@@ -46,9 +46,41 @@ Use this setup as-is, or as a base to tweak for your tastes. It's especially use
 ## ✨ Release Notes
 
 <details>
- <summary>March 2, 2026: v2.0.0</summary>
+ <summary>v2.0.0 - 2.0.6 </summary>
+	  <p></p>
+	
+2.0.6 (March 3, 2026)
+- update: all passthrough streams under Passthrough Options will now bypass all SEL filtering limits (like those set under Additional Limit Options)
+- fixed: language & sel score now removed from Cached Sort when set to no boost
+- new: 1080p Remux filter @thoaster 
+- new: "keep custom SEL scores", @deluxas under Misc Options header, now allows you to keep your custom edits of RSEs
+- minor: updated various menu descriptions for clarity
+- minor: cleaned up formatter for 'external downloader' view
 
-### Cross-posts with my Discord Post. Release Notes for v2.0.0.
+v2.0.5 
+- fixed: anime only language pin wrong syntax, causing error on saving @blarns 
+- fixed: sel urls being overridden in partial template when no sel selected @heinzgruber. 
+- new: added ☑ ɴᴢʙ Passthrough and ☑ ɴᴢʙ-Only Passthrough
+- minor: edited Boost Cached Usenet description
+- minor: a missing space after ᴀʟᴛ ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ in formatter @archdukeofsalt
+
+v2.0.4
+- fixed: pin/passthrough selection not being detected and their SELs not being inserted @shmoush. 
+  - instead of inputs.something == true, switched to use the variable directly
+
+v2.0.3
+- fixed: 4k remux not working (by moving it from ReSE to ESE field) @pedronolix64gomes 
+
+v2.0.2
+- update: set default language passthrough amount to 5, still adjustable if you wish
+- fixed: removed placeholder `streams` field off ReSE which previously prevented additional Limit SELs from working
+
+ v2.0.1
+- fixed: ReSE visual tags passthrough wrong syntax, causing error on saving @stevenhxo 
+
+March 2, 2026: v2.0.0
+
+**Cross-posts with my Discord Post. Release Notes for v2.0.0.**
 
 Yoooo @The SELebrities ! I got a big template update for y'all. With the help of our lord and saviour Viren the Third (don't ask what happened to the first and second...), I’ve completely overhauled our AIOStreams SEL Templates! You no longer need to hunt through dozens of different versions of the same thing. It makes your life easy, it makes my life even easier. Took a long time but I've finished integrating most parts of my complicated setup into the new Template Wizard. It's gonna guide you through a custom setup during import process. Options galore!  As always, you know what to do. Try the updated template, leave your feedback and requests over at [Discussion](https://discord.com/channels/1225024298490662974/1391478569607368924) thread.  Drop a [coffee](https://ko-fi.com/tamtaro) on your way out if you appreciate the work. 
 
