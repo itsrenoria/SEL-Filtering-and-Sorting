@@ -113,7 +113,11 @@ There are now only two templates: _Tamtaro Complete SEL Setup_ and _Tamtaro Part
   - Streams are sorted under Global dropdown inside Cached:
     - Debrid/Usenet : _SeaDex → Resolution → Quality → Library → Stream Expression → Stream Expression Score → Language → Encode → Bitrate → Seeders_.
     - P2P Setup: _SeaDex → Resolution → Quality → Library → Stream Expression → Stream Expression Score → Seeders → Language → Encode → Bitrate_.
-  - You can fine-tune the Sort Order by applying "Boosts" to specific categories - Library Boost: Prioritizes streams already in your library within each category. This is useful for quickly identifying specific episodes or manually added content. - Language Boost: Gives priority to streams matching your "Preferred Languages". Higher boosts may rank lower-quality streams higher if they contain your preferred language. - SEL Score Boost: Prioritizes results with higher SEL scores, regardless of resolution or quality. - Seeders Boost (P2P Only): Ensures streams with the highest seeder counts appear at the top.
+  - You can fine-tune the Sort Order by applying "Boosts" to specific categories
+      - Library Boost: Prioritizes streams already in your library within each category. This is useful for quickly identifying specific episodes or manually added content.
+      - Language Boost: Gives priority to streams matching your "Preferred Languages". Higher boosts may rank lower-quality streams higher if they contain your preferred language.
+      - SEL Score Boost: Prioritizes results with higher SEL scores, regardless of resolution or quality.
+      - Seeders Boost (P2P Only): Ensures streams with the highest seeder counts appear at the top.
     ┈┈┈┈┈┈┈┈․° ☣ °․┈┈┈┈┈┈┈┈
 
 - Recommended Optional SELs
