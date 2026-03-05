@@ -6,9 +6,10 @@
       "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
       "source": "external",
       "author": "Tamtaro",
-      "version": "2.0.7",
+      "version": "2.0.8",
       "category": "AIO",
       "serviceRequired": false,
+      "changelogUrl": "https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/CHANGELOG.md",
       "inputs": [
         {
           "__if": "!services",
@@ -338,7 +339,7 @@
           "__if": "services",
           "id": "sorting",
           "name": "Sorting Options",
-          "description": "Streams are sorted under Global dropdown inside Cached: SeaDex → Resolution → Quality → Library → Stream Expression → Stream Expression Score → Language → Encode → Bitrate → Seeders.",
+          "description": "Streams are sorted under Global Cached: SeaDex → Resolution → Quality → Library → Stream Expression → Stream Expression Score → Language → Encode → Bitrate → Seeders.",
           "type": "subsection",
           "required": false,
           "advanced": true,
@@ -416,7 +417,7 @@
           "__if": "!services",
           "id": "sortingP2P",
           "name": "Sorting Options",
-          "description": "Streams are sorted under Global dropdown inside Cached: SeaDex → Resolution → Quality → Library → Stream Expression → Stream Expression Score → Seeders → Language → Encode → Bitrate",
+          "description": "Streams are sorted under Global Cached: SeaDex → Resolution → Quality → Library → Stream Expression → Stream Expression Score → Seeders → Language → Encode → Bitrate",
           "type": "subsection",
           "advanced": true,
           "subOptions": [
@@ -492,7 +493,7 @@
         {
           "id": "formatterChoice",
           "name": "Formatter Style",
-          "description": "Choose the formatter. **Tamtaro (Recommended)** strips audio/video tags from the rseMatched line for a cleaner look. **Tamtaro (Full RSE Matched)** keeps all matched Vidhin regex tags in the last line, useful for debugging scores. **None** retains your existing formatter (no changes will be made to the formatter, but other filters and settings will still be imported).",
+          "description": "Choose the formatter. **Tamtaro (Recommended)** strips audio/video tags from the rseMatched line for a cleaner look. **Tamtaro (Full RSE Matched)** keeps all matched Vidhin regex tags in the last line, useful for debugging scores. **AppleTV Stremio** (dividedby & stepthomas) modified version to fit the 4-line format on tvOS. **None** retains your existing formatter.",
           "type": "select",
           "required": false,
           "default": "default",
@@ -504,6 +505,10 @@
             {
               "value": "fullRse",
               "label": "Tamtaro (Full RSE Matched)"
+            },
+            {
+              "value": "appleTv",
+              "label": "AppleTV Stremio (dividedby & stepthomas)"
             },
             {
               "value": "retain",
@@ -840,81 +845,6 @@
               "default": false
             },
             {
-              "id": "usenetNotice",
-              "name": "",
-              "description": "Usenet Passthrough Options",
-              "type": "alert",
-              "intent": "info-basic"
-            },
-            {
-              "id": "usenetHealth",
-              "name": "Health-Checked Usenet Passthrough",
-              "description": "**☑ NZB Passthrough**: allows all health-checked Zyclops/UsenetStreamer usenet to bypass SEL filters. **☑ NZB-Only Passthrough**: allows all health-checked usenet to bypass SEL filters *and* removes all non-health-checked usenet.",
-              "type": "select",
-              "required": false,
-              "default": "none",
-              "options": [
-                {
-                  "value": "none",
-                  "label": "Disabled"
-                },
-                {
-                  "value": "Checkednzb",
-                  "label": "☑ NZB "
-                },
-                {
-                  "value": "CheckednzbOnly",
-                  "label": "☑ NZB-Only"
-                }
-              ]
-            },
-            {
-              "id": "usenetTopQualRes",
-              "name": "Usenet Per Quality/Resolution",
-              "description": "Allow top usenet results from each Quality/Resolution category to bypass SEL filters. Usenet results will still be ranked lower than cached debrid for any given Quality/Resolution category, unless health-checked.",
-              "type": "select",
-              "required": false,
-              "default": "0",
-              "options": [
-                {
-                  "value": "0",
-                  "label": "Disabled"
-                },
-                {
-                  "value": "1",
-                  "label": "1 per Quality/Resolution"
-                },
-                {
-                  "value": "2",
-                  "label": "2 per Quality/Resolution"
-                },
-                {
-                  "value": "3",
-                  "label": "3 per Quality/Resolution"
-                },
-                {
-                  "value": "4",
-                  "label": "4 per Quality/Resolution"
-                },
-                {
-                  "value": "5",
-                  "label": "5 per Quality/Resolution"
-                },
-                {
-                  "value": "6",
-                  "label": "6 per Quality/Resolution"
-                }
-              ]
-            },
-            {
-              "id": "usenetSort",
-              "name": "Boost Cached Usenet",
-              "description": "Select this if you want to prioritize all cached usenet (not just health-checked) on the same level as cached debrid. Their results will merge in the sort order. Good idea only if your usenet health is as reliable as your debrid. Uncached usenet will still appear at the bottom, due to Cached first sorting.",
-              "type": "boolean",
-              "required": false,
-              "default": false
-            },
-            {
               "id": "visualTagNotice",
               "name": "",
               "description": "Visual Tags Passthrough Options",
@@ -974,6 +904,100 @@
               "id": "top1QualResPin",
               "name": "Pin Top 1 Per Quality/Resolution",
               "description": "This will pin the top 1 result for each Quality/Resolution (6 max), bypassing SEL filters.",
+              "type": "boolean",
+              "required": false,
+              "default": false
+            }
+          ]
+        },
+        {
+          "id": "usenetNotice",
+          "name": "Usenet Options",
+          "description": "",
+          "type": "alert",
+          "advanced": true,
+          "intent": "info-basic"
+        },
+        {
+          "id": "usenet",
+          "name": "Usenet Passthrough & Sort",
+          "description": "Various passthrough and sort options for Usenet. Any streams selected for passthrough will be exempted from any additional filtering limits you set below.",
+          "type": "subsection",
+          "advanced": true,
+          "required": false,
+          "subOptions": [
+            {
+              "id": "usenetHealth",
+              "name": "Health-Checked Usenet Passthrough",
+              "description": "**☑ NZB Passthrough**: allows all health-checked Zyclops/UsenetStreamer usenet to bypass SEL filters. **☑ NZB-Only Passthrough**: allows all health-checked usenet to bypass SEL filters *and* removes all non-health-checked usenet.",
+              "type": "select",
+              "required": false,
+              "default": "none",
+              "options": [
+                {
+                  "value": "none",
+                  "label": "Disabled"
+                },
+                {
+                  "value": "Checkednzb",
+                  "label": "☑ NZB "
+                },
+                {
+                  "value": "CheckednzbOnly",
+                  "label": "☑ NZB-Only"
+                }
+              ]
+            },
+            {
+              "id": "usenetTopQualRes",
+              "name": "Usenet Per Quality/Resolution Passthrough",
+              "description": "Allow top usenet results from each Quality/Resolution category to bypass SEL filters. Usenet results (unless health checked) will be ranked lower than cached debrid for any given Quality/Resolution category. You can merge cached Usenet and cached Debrid using the Boost Usenet toggle.",
+              "type": "select",
+              "required": false,
+              "default": "0",
+              "options": [
+                {
+                  "value": "0",
+                  "label": "Disabled"
+                },
+                {
+                  "value": "1",
+                  "label": "1 per Quality/Resolution"
+                },
+                {
+                  "value": "2",
+                  "label": "2 per Quality/Resolution"
+                },
+                {
+                  "value": "3",
+                  "label": "3 per Quality/Resolution"
+                },
+                {
+                  "value": "4",
+                  "label": "4 per Quality/Resolution"
+                },
+                {
+                  "value": "5",
+                  "label": "5 per Quality/Resolution"
+                },
+                {
+                  "value": "6",
+                  "label": "6 per Quality/Resolution"
+                }
+              ]
+            },
+            {
+              "id": "usenetSort",
+              "name": "Boost Cached Usenet",
+              "description": "Select this if you want to prioritize all cached usenet (not just health-checked) on the same level as cached debrid. Their results will merge in the sort order. Good idea only if your usenet health is as reliable as your debrid. Uncached usenet will still appear at the bottom, due to Cached first sorting.",
+              "type": "boolean",
+              "required": false,
+              "default": false
+            },
+            {
+              "id": "usenetUncachedSort",
+              "name": "Boost Uncached Usenet",
+              "description": "If selected, uncached usenet results will be merged into the global results instead of being separated into an 'Uncached' group. This effectively treats uncached usenet with the same priority rules as cached results.",
               "type": "boolean",
               "required": false,
               "default": false
@@ -1127,8 +1151,8 @@
         },
         {
           "id": "keepScore",
-          "name": "Keep Custom SEL Scores",
-          "description": "Select this option if you want to prevent your custom edits to SEL or regex scores from being overwritten with Vidhin's default scores. If you don't know what this means, leave it unchecked to benefit from Vidhin's default SEL scores, which are designed to work well with this template.",
+          "name": "Keep Custom SEL Edits",
+          "description": "Select this option if you want to prevent your custom edits to SEL or regex in synced urls from being overwritten with default values. Leave it unchecked to benefit from Vidhin's default SEL scores, which are designed to work well with this template.",
           "type": "boolean",
           "required": false,
           "default": false
@@ -1358,12 +1382,12 @@
           "enabled": true
         },
         {
-          "__if": "inputs.passthrough.usenetHealth includes Checkednzb",
+          "__if": "inputs.usenet.usenetHealth includes Checkednzb",
           "expression": "/*☑ ɴᴢʙ Passthrough*/ passthrough(message(type(streams, 'usenet', 'stremio-usenet'),'includes','✅','🧝'), 'excluded', 'required')",
           "enabled": true
         },
         {
-          "__if": "inputs.passthrough.usenetHealth includes CheckednzbOnly",
+          "__if": "inputs.usenet.usenetHealth includes CheckednzbOnly",
           "expression": "/*☑ ɴᴢʙ-Only Passthrough*/ merge(negate(message(streams,'includes','✅','🧝'), type(streams, 'usenet', 'stremio-usenet')), passthrough(message(type(streams, 'usenet', 'stremio-usenet'),'includes','✅','🧝'), 'excluded', 'required'))",
           "enabled": true
         },
@@ -1393,12 +1417,12 @@
           "enabled": true
         },
         {
-          "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and !inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
+          "__if": "inputs.passthrough.language != none and !inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
           "expression": "/*Top {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required')",
           "enabled": true
         },
         {
-          "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
+          "__if": "inputs.passthrough.language != none and inputs.passthrough.languagePin and !inputs.passthrough.languageAnimeOnly",
           "expression": "/*Pin {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ pin(passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required'), 'top')",
           "enabled": true
         },
@@ -1409,22 +1433,12 @@
         },
         {
           "__if": "inputs.passthrough.language != none and inputs.passthrough.language != English and inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
-          "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? pin(passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required'), 'top') : []",
+          "expression": "/*Pin Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? pin(passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required'), 'top') : []",
           "enabled": true
         },
         {
           "__if": "inputs.passthrough.language == English and !inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
           "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(seadex(streams), passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required')) : []",
-          "enabled": true
-        },
-        {
-          "__if": "inputs.passthrough.language == English and inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
-          "expression": "/*Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(seadex(streams), passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required')) : []",
-          "enabled": true
-        },
-        {
-          "__if": "inputs.passthrough.language == English and !inputs.passthrough.languagePin and inputs.passthrough.languageAnimeOnly",
-          "expression": "/*Pin Anime Only {{inputs.passthrough.languageAmount}} {{inputs.passthrough.language}} Passthrough*/ isAnime ? merge(pin(seadex(streams)), passthrough(slice(language(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')), '{{inputs.passthrough.language}}', 'Dual Audio'), 0, {{inputs.passthrough.languageAmount}}), 'excluded', 'required')) : []",
           "enabled": true
         },
         {
@@ -1483,8 +1497,8 @@
           "enabled": true
         },
         {
-          "__if": "inputs.passthrough.usenetTopQualRes",
-          "expression": "/*Top {{inputs.passthrough.usenetTopQualRes}} Usenet Per Quality/Resolution (6 Max)*/ passthrough(slice(negate(merge(library(streams), message(streams,'includes','✅','🧝')), merge(slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'Bluray REMUX'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'Bluray'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'WEB-DL'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'Bluray REMUX'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'Bluray'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'WEB-DL'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'Bluray REMUX'),0,{{inputs.passthrough.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'Bluray'),0,{{inputs.passthrough.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'WEB-DL'),0,{{inputs.passthrough.usenetTopQualRes}}))), 0, {{inputs.passthrough.usenetTopQualRes}}*6), 'excluded', 'required')",
+          "__if": "!inputs.usenet.usenetTopQualRes or inputs.usenet.usenetTopQualRes != 0",
+          "expression": "/*Top {{inputs.usenet.usenetTopQualRes}} Usenet Per Quality/Resolution*/ passthrough(slice(negate(merge(library(streams), message(streams,'includes','✅','🧝')), merge(slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'Bluray REMUX'),0,{{inputs.usenet.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'Bluray'),0,{{inputs.usenet.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'2160p'),'WEB-DL'),0,{{inputs.usenet.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'Bluray REMUX'),0,{{inputs.usenet.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'Bluray'),0,{{inputs.usenet.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'1080p'),'WEB-DL'),0,{{inputs.usenet.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'Bluray REMUX'),0,{{inputs.usenet.usenetTopQualRes}}),slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'Bluray'),0,{{inputs.usenet.usenetTopQualRes}}), slice(quality(resolution(type(streams, 'usenet', 'stremio-usenet'),'720p'),'WEB-DL'),0,{{inputs.usenet.usenetTopQualRes}}))), 0, {{inputs.usenet.usenetTopQualRes}}*6), 'excluded', 'required')",
           "enabled": true
         },
         {
@@ -1521,8 +1535,13 @@
       ],
       "preferredStreamExpressions": [
         {
-          "__if": "inputs.passthrough.usenetSort",
-          "expression": "/*Tier 0 Cached (Usenet + Debrid)*/ merge(cached(type(streams, 'usenet', 'debrid')), type(streams, 'stremio-usenet'))",
+          "__if": "inputs.usenet.usenetSort",
+          "expression": "/*Boost Cached Usenet*/ merge(cached(type(streams, 'usenet', 'debrid')), type(streams, 'stremio-usenet'))",
+          "enabled": true
+        },
+        {
+          "__if": "inputs.usenet.usenetUncachedSort",
+          "expression": "/*Boost Uncached Usenet*/ merge(cached(type(streams, 'debrid')), type(streams, 'usenet', 'stremio-usenet'))",
           "enabled": true
         },
         {
@@ -1566,94 +1585,183 @@
       "sortCriteria": {
         "global": [
           {
+            "__if": "!inputs.usenet.usenetUncachedSort",
             "key": "cached",
             "direction": "desc"
+          },
+          {
+            "__if": "inputs.usenet.usenetUncachedSort",
+            "__value": [
+              {
+                "key": "streamExpressionMatched",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.library == high",
+                "key": "library",
+                "direction": "desc"
+              },
+              {
+                "__if": "!services and inputs.sortingP2P.seeders == high",
+                "key": "seeders",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.language == high or !services and inputs.sortingP2P.language == 'high'",
+                "key": "language",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.selScore == high",
+                "key": "streamExpressionScore",
+                "direction": "desc"
+              },
+              {
+                "__if": "!inputs.includeAddon.noAnime",
+                "key": "seadex",
+                "direction": "desc"
+              },
+              {
+                "key": "resolution",
+                "direction": "desc"
+              },
+              {
+                "key": "quality",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.library == 'default'",
+                "key": "library",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.selScore == default or !services and inputs.sortingP2P.selScore == default",
+                "key": "streamExpressionScore",
+                "direction": "desc"
+              },
+              {
+                "__if": "!services and inputs.sortingP2P.seeders == 'default'",
+                "key": "seeders",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.language == 'default' or !services and inputs.sortingP2P.language == 'default'",
+                "key": "language",
+                "direction": "desc"
+              },
+              {
+                "key": "visualTag",
+                "direction": "desc"
+              },
+              {
+                "key": "audioTag",
+                "direction": "desc"
+              },
+              {
+                "key": "encode",
+                "direction": "desc"
+              },
+              {
+                "key": "bitrate",
+                "direction": "desc"
+              },
+              {
+                "__if": "services or inputs.sorting.seeders == none",
+                "key": "seeders",
+                "direction": "desc"
+              }
+            ]
           }
         ],
         "series": [],
         "anime": [],
         "cached": [
           {
-            "__if": "services and inputs.sorting.library == high",
-            "key": "library",
-            "direction": "desc"
-          },
-          {
-            "__if": "!services and inputs.sortingP2P.seeders == high",
-            "key": "seeders",
-            "direction": "desc"
-          },
-          {
-            "__if": "services and inputs.sorting.language == high or !services and inputs.sortingP2P.language == high",
-            "key": "language",
-            "direction": "desc"
-          },
-          {
-            "__if": "services and inputs.sorting.selScore == high or !services and inputs.sortingP2P.selScore == high",
-            "key": "streamExpressionScore",
-            "direction": "desc"
-          },
-          {
-            "__if": "!inputs.includeAddon.noAnime",
-            "key": "seadex",
-            "direction": "desc"
-          },
-          {
-            "key": "resolution",
-            "direction": "desc"
-          },
-          {
-            "key": "quality",
-            "direction": "desc"
-          },
-          {
-            "__if": "services and inputs.sorting.library == default",
-            "key": "library",
-            "direction": "desc"
-          },
-          {
-            "key": "streamExpressionMatched",
-            "direction": "desc"
-          },
-          {
-            "__if": "services and inputs.sorting.selScore == default or !services and inputs.sortingP2P.selScore == default",
-            "key": "streamExpressionScore",
-            "direction": "desc"
-          },
-          {
-            "__if": "!services and inputs.sortingP2P.seeders == default",
-            "key": "seeders",
-            "direction": "desc"
-          },
-          {
-            "__if": "services and inputs.sorting.language == default or !services and inputs.sortingP2P.language == default",
-            "key": "language",
-            "direction": "desc"
-          },
-          {
-            "key": "visualTag",
-            "direction": "desc"
-          },
-          {
-            "key": "audioTag",
-            "direction": "desc"
-          },
-          {
-            "key": "encode",
-            "direction": "desc"
-          },
-          {
-            "key": "bitrate",
-            "direction": "desc"
-          },
-          {
-            "__if": "services or inputs.sorting.seeders == none",
-            "key": "seeders",
-            "direction": "desc"
+            "__if": "!inputs.usenet.usenetUncachedSort",
+            "__value": [
+              {
+                "__if": "services and inputs.sorting.library == high",
+                "key": "library",
+                "direction": "desc"
+              },
+              {
+                "__if": "!services and inputs.sortingP2P.seeders == high",
+                "key": "seeders",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.language == high or !services and inputs.sortingP2P.language == high",
+                "key": "language",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.selScore == high or !services and inputs.sortingP2P.selScore == high",
+                "key": "streamExpressionScore",
+                "direction": "desc"
+              },
+              {
+                "__if": "!inputs.includeAddon.noAnime",
+                "key": "seadex",
+                "direction": "desc"
+              },
+              {
+                "key": "resolution",
+                "direction": "desc"
+              },
+              {
+                "key": "quality",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.library == default",
+                "key": "library",
+                "direction": "desc"
+              },
+              {
+                "key": "streamExpressionMatched",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.selScore == default or !services and inputs.sortingP2P.selScore == default",
+                "key": "streamExpressionScore",
+                "direction": "desc"
+              },
+              {
+                "__if": "!services and inputs.sortingP2P.seeders == default",
+                "key": "seeders",
+                "direction": "desc"
+              },
+              {
+                "__if": "services and inputs.sorting.language == default or !services and inputs.sortingP2P.language == default",
+                "key": "language",
+                "direction": "desc"
+              },
+              {
+                "key": "visualTag",
+                "direction": "desc"
+              },
+              {
+                "key": "audioTag",
+                "direction": "desc"
+              },
+              {
+                "key": "encode",
+                "direction": "desc"
+              },
+              {
+                "key": "bitrate",
+                "direction": "desc"
+              },
+              {
+                "__if": "services or inputs.sorting.seeders == none",
+                "key": "seeders",
+                "direction": "desc"
+              }
+            ]
           }
         ],
         "uncached": {
-          "__if": "services",
+          "__if": "services and !inputs.usenet.usenetUncachedSort",
           "__value": [
             {
               "__if": "inputs.sorting.library == high",
@@ -1745,6 +1853,13 @@
               "description": "{stream.title::exists::and::stream.library::isfalse[\"✎  {stream.title::title::truncate(15)}\"||\"\"]}{stream.title::exists::and::stream.library::istrue[\"☁︎  {stream.title::title::truncate(15)} \"||\"\"]}{stream.year::exists::and::stream.episodes::exists::isfalse::and::stream.seasons::exists::isfalse[\" ({stream.year})\"||\"\"]}{stream.seasonEpisode::exists[\"  {stream.seasonEpisode::join('·')::replace('E','ᴇ')::replace('S','s')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}\n{stream.visualTags::=IMAX[\"{tools.removeLine}\\n\"||\"{tools.removeLine}\\n\"]}{stream.encode::exists[\"▣  {stream.encode}  \"||\"\"]}{stream.visualTags::~DV::or::stream.visualTags::~HDR::or::stream.visualTags::~HDR10::or::stream.visualTags::~HDR10+::and::stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"✦  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse::and::stream.visualTags::~DV::isfalse::and::stream.visualTags::~HDR::isfalse::and::stream.visualTags::~HDR10::isfalse::and::stream.visualTags::~HDR10+::isfalse[\"✧  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"{stream.visualTags::sort::join(' · ')::replace('HDR · HDR','HDR')::replace(' · IMAX','')} \"||\"\"]}\n{stream.audioTags::exists[\"♬  {stream.audioTags::lsort::join(' · ')::replace('DD · DD','DD')::replace('DTS · DTS','DTS')}  \"||\"\"]}{stream.audioChannels::exists[\"♯  {stream.audioChannels::join(' · ')} \"||\"\"]}\n{stream.size::>0::and::stream.seasonPack::istrue[\"❖  \"||\"\"]}{stream.size::>0::and::stream.seasonPack::isfalse[\"◈  \"||\"\"]}{stream.size::>0[\"{stream.size::sbytes}\"||\"\"]}{stream.folderSize::>0[\"/{stream.folderSize::sbytes}\"||\"\"]}{stream.bitrate::exists[\" · {stream.bitrate::sbitrate::replace('Mbps','ᴹᵇᵖˢ')::replace('Kbps','ᴷᵇᵖˢ')} \"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::isfalse::or::stream.type::=p2p::and::stream.seeders::>0[\"⇄ {stream.seeders}❦ \"||\"\"]}{stream.age::exists[\"· {stream.age}\"||\"\"]}\n{stream.proxied::istrue[\"⛊  \"||\"⛉  \"]}{service.shortName::exists[\"[{service.shortName}] \"||\"\"]}{addon.name}{stream.private::istrue[\" ⚿ ᴘʀɪᴠᴀᴛᴇ \"||\"\"]}{stream.releaseGroup::exists[\" · {stream.releaseGroup::truncate(13)}\"||\"\"]}{stream.indexer::exists::and::stream.type::~usenet[\" · {stream.indexer::truncate(13)}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\\n\"||\"\"]}\n{stream.uLanguages::exists[\"⛿  {stream.uSmallLanguageCodes::join(' · ')::replace('ꜰ','ғ')::replace('x','х')::replace('ꞯ','ϙ')::replace('ꜱ','s')::replace('ᴅᴜᴀʟ ᴀᴜᴅɪᴏ','ᴅᴜᴏ')::replace('ᴅᴜʙʙᴇᴅ','ᴅᴜʙ')}  \"||\"\"]}{stream.seadex::or::stream.seScore::>0::or::stream.seScore::<0::or::stream.message::exists::or::stream.rseMatched::length::>0[\" »  \"||\"\"]}{stream.seadexBest::istrue[\" ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ \"||\"\"]}{stream.seadex::istrue::and::stream.seadexBest::isfalse[\" ᴀʟᴛ ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ\"||\"\"]}{stream.seadex::isfalse::and::stream.rseMatched::length::>0[\"{stream.rseMatched::join('  ')::replace('Movies Anywhere','MA')::upper::replace('F','ғ')::replace('X','х')::replace('Q','ϙ')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')::smallcaps::replace('ꜱ','s')} \"||\"\"]}{stream.message::exists[\" {stream.message::replace('NZB Health: ✅','☑ ɴᴢʙ')::replace('NZB Health: 🧝','☑ ᴇʟғ ɴᴢʙ')::replace('NZB Health: ⚠️','ᴜɴᴠᴇʀɪғɪᴇᴅ ɴᴢʙ')::replace('NZB Health: 🚫','✘ɴᴢʙ')::smallcaps} \"||\"\"]}{stream.seScore::>0::or::stream.seScore::<0[\"{stream.seScore::string::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::istrue::and::stream.message::~Download::istrue[\"\\n➥ DL Stream\"||\"\"]}"
             }
           },
+          "appleTv": {
+            "id": "custom",
+            "definition": {
+              "name": "{stream.resolution::exists[\"{stream.resolution::replace('2160p','4K')::replace('1440p','2K')::replace('p','P')}‍\"||\"‍\"]}{stream.type::exists[\"‍{stream.type::replace('debrid','')::replace('p2p','⁽ᵖ²ᵖ⁾')::replace('live','⁽ˡᶦᵛᵉ⁾')::replace('http','⁽ʷᵉᵇ⁾')::replace('usenet','‍⁽ⁿᶻᵇ⁾‍')::replace('stremio-usenet','‏⁽ⁿᶻᵇ⁾')::replace('info','⁽ᶦⁿᶠᵒ⁾')::replace('statistic','⁽ˢᵗᵃᵗˢ⁾')::replace('external','⁽ᵉˣᵗ⁾')::replace('error','⁽ᵉʳʳᵒʳ⁾')::replace('youtube','⁽ʸᵗ⁾')}‍‍‍\"||\"\"]} {service.cached::istrue[\"⚡\"||\"\"]}{service.cached::isfalse[\"‍⏳‍​\"||\"\"]}{stream.quality::exists[\"‍‍{stream.quality::title::replace('Bluray Remux','ʀᴇᴍᴜx')::replace('Bluray','ʙʟᴜʀᴀʏ')::replace('Web-dl','ᴡᴇʙ‍-‍ᴅʟ')::replace('Hc Hd-rip','ʜᴄ ʜᴅʀɪᴘ')::replace('Hdrip','ʜᴅʀɪᴘ')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]} {stream.nSeScore::exists[\"‍{stream.nSeScore::star::replace('⯪','☆')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}",
+              "description": "{stream.title::exists::and::stream.library::isfalse[\"✎  {stream.title::title::truncate(15)}\"||\"\"]}{stream.title::exists::and::stream.library::istrue[\"☁︎  {stream.title::title::truncate(15)} \"||\"\"]}{stream.year::exists::and::stream.episodes::exists::isfalse::and::stream.seasons::exists::isfalse[\" ({stream.year})\"||\"\"]}{stream.seasonEpisode::exists[\"  {stream.seasonEpisode::join('·')::replace('E','ᴇ')::replace('S','s')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}\n{stream.visualTags::=IMAX[\"{tools.removeLine}\\n\"||\"{tools.removeLine}\\n\"]}{stream.encode::exists[\"▣  {stream.encode}  \"||\"\"]}{stream.visualTags::~DV::or::stream.visualTags::~HDR::or::stream.visualTags::~HDR10::or::stream.visualTags::~HDR10+::and::stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"✦  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse::and::stream.visualTags::~DV::isfalse::and::stream.visualTags::~HDR::isfalse::and::stream.visualTags::~HDR10::isfalse::and::stream.visualTags::~HDR10+::isfalse[\"✧  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"{stream.visualTags::sort::join(' · ')::replace('HDR · HDR','HDR')::replace(' · IMAX','')} \"||\"\"]} {stream.audioTags::exists[\"♬  {stream.audioTags::lsort::join(' · ')::replace('DD · DD','DD')::replace('DTS · DTS','DTS')}  \"||\"\"]}{stream.audioChannels::exists[\"♯  {stream.audioChannels::join(' · ')} \"||\"\"]}\n{stream.size::>0::and::stream.seasonPack::istrue[\"❖  \"||\"\"]}{stream.size::>0::and::stream.seasonPack::isfalse[\"◈  \"||\"\"]}{stream.size::>0[\"{stream.size::sbytes}\"||\"\"]}{stream.folderSize::>0[\"/{stream.folderSize::sbytes}\"||\"\"]}{stream.bitrate::exists[\" · {stream.bitrate::sbitrate::replace('Mbps','ᴹᵇᵖˢ')::replace('Kbps','ᴷᵇᵖˢ')} \"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::isfalse::or::stream.type::=p2p::and::stream.seeders::>0[\"⇄ {stream.seeders}❦ \"||\"\"]}{stream.age::exists[\"· {stream.age}\"||\"\"]}  {stream.proxied::istrue[\"⛊  \"||\"⛉  \"]}{service.shortName::exists[\"[{service.shortName}] \"||\"\"]}{addon.name}{stream.private::istrue[\" ⚿ ᴘʀɪᴠᴀᴛᴇ \"||\"\"]}{stream.releaseGroup::exists[\" · {stream.releaseGroup::truncate(13)}\"||\"\"]}{stream.indexer::exists::and::stream.type::~usenet[\" · {stream.indexer::truncate(13)}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\\n\"||\"\"]}\n{stream.uLanguages::exists[\"⛿  {stream.uSmallLanguageCodes::join(' · ')::replace('ꜰ','ғ')::replace('x','х')::replace('ꞯ','ϙ')::replace('ꜱ','s')::replace('ᴅᴜᴀʟ ᴀᴜᴅɪᴏ','ᴅᴜᴏ')::replace('ᴅᴜʙʙᴇᴅ','ᴅᴜʙ')}  \"||\"\"]}{stream.seadex::or::stream.seScore::>0::or::stream.seScore::<0::or::stream.message::exists::or::stream.rseMatched::length::>0[\" »  \"||\"\"]}{stream.seadexBest::istrue[\" ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ \"||\"\"]}{stream.seadex::istrue::and::stream.seadexBest::isfalse[\" ᴀʟᴛ ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ\"||\"\"]}{stream.seadex::isfalse::and::stream.rseMatched::length::>0[\"{stream.rseMatched::remove('TrueHD ATMOS')::remove('DD+ ATMOS')::remove('ATMOS')::remove('TrueHD')::remove('DTS-HD MA')::remove('FLAC')::remove('DTS-HD HRA')::remove('DD+')::remove('DD')::remove('DTS-ES')::remove('DTS X')::remove('DTS')::remove('AAC')::remove('Opus')::remove('DV (Disk)')::remove('DV')::remove('HDR10+ Boost')::remove('HDR')::remove('UHD Streaming Boost')::remove('HD Streaming Boost')::remove('INTERNAL')::remove('No-RlsGroup')::remove('FHD')::remove('UHD ')::remove('UHD')::remove('HD ')::remove('HD')::remove('4K')::remove('126811')::remove('SiC')::remove('FraMeSToR')::remove('TheFarm')::remove('hallowed')::remove('BHDStudio')::remove('FLUX')::join('  ')::replace('Movies Anywhere','MA')::upper::replace('F','ғ')::replace('X','х')::replace('Q','ϙ')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')::smallcaps::replace('ꜱ','s')} \"||\"\"]}{stream.message::exists[\" {stream.message::replace('NZB Health: ✅','☑ ɴᴢʙ')::replace('NZB Health: 🧝','☑ ᴇʟғ ɴᴢʙ')::replace('NZB Health: ⚠️','ᴜɴᴠᴇʀɪғɪᴇᴅ ɴᴢʙ')::replace('NZB Health: 🚫','✘ɴᴢʙ')::smallcaps} \"||\"\"]}{stream.seScore::>0::or::stream.seScore::<0[\"{stream.seScore::string::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::istrue::and::stream.message::~Download::istrue[\"\\n➥ DL Stream\"||\"\"]}"
+            }
+          },
           "retain": {
             "__remove": true
           }
@@ -1799,7 +1914,6 @@
       },
       "tmdbApiKey": "<template_placeholder>",
       "tvdbApiKey": "<template_placeholder>",
-      "rpdbApiKey": "<optional_template_placeholder>",
       "yearMatching": {
         "enabled": true,
         "tolerance": 1,
@@ -2415,7 +2529,7 @@
       "description": "A focused template for importing partial aspects of Tamtaro SEL Setup, without overriding your existing configurations. Use this 'Partial' template if you want to keep your current setup but upgrade your filtering and sorting logic. \n* **Core Filtering Engine**: Choose between **Standard** (keeps top 3 streams per Quality/Resolution, approx. 20 total) or **Extended** (keeps top 6, approx. 40 total) to eliminate clutter while maintaining quality coverage.\n* **Synced URL Integration**: Automatically pulls the latest synced URLs for Excluded, Included, and Preferred Stream Expressions from [GitHub](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting).\n* To use Preferred Stream Expressions, ensure 'Stream Expressions' is added to your Sort Order.\n* **Custom Formatter Only**: Includes the custom Tamtaro formatter with options for a clean look or a full debug view (RSE Matched).",
       "source": "external",
       "author": "Tamtaro",
-      "version": "2.0.7",
+      "version": "2.0.8",
       "category": "AIO",
       "serviceRequired": false,
       "services": [],
@@ -2430,7 +2544,7 @@
         {
           "id": "formatterChoice",
           "name": "Formatter Only",
-          "description": "This will import only the formatter used in Complete SEL Setup. **Tamtaro (Recommended)** strips audio/video tags from the rseMatched line for a cleaner look. **Tamtaro (Full RSE Matched)** keeps all matched Vidhin regex tags in the last line, useful for debugging scores. **None** retains your existing formatter (no changes will be made to the formatter, but other filters and settings will still be imported).",
+          "description": "This will import only the formatter used in Complete SEL Setup. **Tamtaro (Recommended)** strips audio/video tags from the rseMatched line for a cleaner look. **Tamtaro (Full RSE Matched)** keeps all matched Vidhin regex tags in the last line, useful for debugging scores. **AppleTV Stremio** (dividedby & stepthomas) modified version to fit the 4-line format on tvOS. **None** retains your existing formatter (no changes will be made to the formatter, but other filters and settings will still be imported).",
           "type": "select",
           "required": false,
           "default": "retain",
@@ -2446,6 +2560,10 @@
             {
               "value": "fullRse",
               "label": "Tamtaro (Full RSE Matched)"
+            },
+            {
+              "value": "appleTv",
+              "label": "AppleTV Stremio (dividedby & stepthomas)"
             }
           ]
         },
@@ -2519,6 +2637,13 @@
             "definition": {
               "name": "{stream.resolution::exists[\"{stream.resolution::replace('2160p','   4K ')::replace('1440p','    2K ')::replace('p','P')}‍\"||\"‍     \"]}{stream.type::exists[\"‍{stream.type::replace('debrid','    ')::replace('p2p','⁽ᵖ²ᵖ⁾')::replace('live','⁽ˡᶦᵛᵉ⁾')::replace('http','⁽ʷᵉᵇ⁾')::replace('usenet','‍⁽ⁿᶻᵇ⁾‍')::replace('stremio-usenet','‏⁽ⁿᶻᵇ⁾')::replace('info','⁽ᶦⁿᶠᵒ⁾')::replace('statistic','⁽ˢᵗᵃᵗˢ⁾')::replace('external','⁽ᵉˣᵗ⁾')::replace('error','⁽ᵉʳʳᵒʳ⁾')::replace('youtube','⁽ʸᵗ⁾')}‍‍‍\"||\"\"]}{service.cached::istrue[\"⚡\"||\"\"]}{service.cached::isfalse[\"‍⏳‍​\"||\"\"]}{stream.quality::exists[\"‍‍\\n  〈{stream.quality::title::replace('Bluray Remux','Remux')::replace('Web-dl','Web‍-‍dl')::replace('Hc Hd-rip','HC HDRip')::replace('Hdrip','HDRip')}〉‍     \"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\\n\"||\"\"]}{stream.nSeScore::exists[\"‍\\n  {stream.nSeScore::star::replace('⯪','☆')}            \"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\\n\"||\"\"]}",
               "description": "{stream.title::exists::and::stream.library::isfalse[\"✎  {stream.title::title::truncate(15)}\"||\"\"]}{stream.title::exists::and::stream.library::istrue[\"☁︎  {stream.title::title::truncate(15)} \"||\"\"]}{stream.year::exists::and::stream.episodes::exists::isfalse::and::stream.seasons::exists::isfalse[\" ({stream.year})\"||\"\"]}{stream.seasonEpisode::exists[\"  {stream.seasonEpisode::join('·')::replace('E','ᴇ')::replace('S','s')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}\n{stream.visualTags::=IMAX[\"{tools.removeLine}\\n\"||\"{tools.removeLine}\\n\"]}{stream.encode::exists[\"▣  {stream.encode}  \"||\"\"]}{stream.visualTags::~DV::or::stream.visualTags::~HDR::or::stream.visualTags::~HDR10::or::stream.visualTags::~HDR10+::and::stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"✦  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse::and::stream.visualTags::~DV::isfalse::and::stream.visualTags::~HDR::isfalse::and::stream.visualTags::~HDR10::isfalse::and::stream.visualTags::~HDR10+::isfalse[\"✧  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"{stream.visualTags::sort::join(' · ')::replace('HDR · HDR','HDR')::replace(' · IMAX','')} \"||\"\"]}\n{stream.audioTags::exists[\"♬  {stream.audioTags::lsort::join(' · ')::replace('DD · DD','DD')::replace('DTS · DTS','DTS')}  \"||\"\"]}{stream.audioChannels::exists[\"♯  {stream.audioChannels::join(' · ')} \"||\"\"]}\n{stream.size::>0::and::stream.seasonPack::istrue[\"❖  \"||\"\"]}{stream.size::>0::and::stream.seasonPack::isfalse[\"◈  \"||\"\"]}{stream.size::>0[\"{stream.size::sbytes}\"||\"\"]}{stream.folderSize::>0[\"/{stream.folderSize::sbytes}\"||\"\"]}{stream.bitrate::exists[\" · {stream.bitrate::sbitrate::replace('Mbps','ᴹᵇᵖˢ')::replace('Kbps','ᴷᵇᵖˢ')} \"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::isfalse::or::stream.type::=p2p::and::stream.seeders::>0[\"⇄ {stream.seeders}❦ \"||\"\"]}{stream.age::exists[\"· {stream.age}\"||\"\"]}\n{stream.proxied::istrue[\"⛊  \"||\"⛉  \"]}{service.shortName::exists[\"[{service.shortName}] \"||\"\"]}{addon.name}{stream.private::istrue[\" ⚿ ᴘʀɪᴠᴀᴛᴇ \"||\"\"]}{stream.releaseGroup::exists[\" · {stream.releaseGroup::truncate(13)}\"||\"\"]}{stream.indexer::exists::and::stream.type::~usenet[\" · {stream.indexer::truncate(13)}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\\n\"||\"\"]}\n{stream.uLanguages::exists[\"⛿  {stream.uSmallLanguageCodes::join(' · ')::replace('ꜰ','ғ')::replace('x','х')::replace('ꞯ','ϙ')::replace('ꜱ','s')::replace('ᴅᴜᴀʟ ᴀᴜᴅɪᴏ','ᴅᴜᴏ')::replace('ᴅᴜʙʙᴇᴅ','ᴅᴜʙ')}  \"||\"\"]}{stream.seadex::or::stream.seScore::>0::or::stream.seScore::<0::or::stream.message::exists::or::stream.rseMatched::length::>0[\" »  \"||\"\"]}{stream.seadexBest::istrue[\" ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ \"||\"\"]}{stream.seadex::istrue::and::stream.seadexBest::isfalse[\" ᴀʟᴛ ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ\"||\"\"]}{stream.seadex::isfalse::and::stream.rseMatched::length::>0[\"{stream.rseMatched::join('  ')::replace('Movies Anywhere','MA')::upper::replace('F','ғ')::replace('X','х')::replace('Q','ϙ')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')::smallcaps::replace('ꜱ','s')} \"||\"\"]}{stream.message::exists[\" {stream.message::replace('NZB Health: ✅','☑ ɴᴢʙ')::replace('NZB Health: 🧝','☑ ᴇʟғ ɴᴢʙ')::replace('NZB Health: ⚠️','ᴜɴᴠᴇʀɪғɪᴇᴅ ɴᴢʙ')::replace('NZB Health: 🚫','✘ɴᴢʙ')::smallcaps} \"||\"\"]}{stream.seScore::>0::or::stream.seScore::<0[\"{stream.seScore::string::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::istrue::and::stream.message::~Download::istrue[\"\\n➥ DL Stream\"||\"\"]}"
+            }
+          },
+          "appleTv": {
+            "id": "custom",
+            "definition": {
+              "name": "{stream.resolution::exists[\"{stream.resolution::replace('2160p','4K')::replace('1440p','2K')::replace('p','P')}‍\"||\"‍\"]}{stream.type::exists[\"‍{stream.type::replace('debrid','')::replace('p2p','⁽ᵖ²ᵖ⁾')::replace('live','⁽ˡᶦᵛᵉ⁾')::replace('http','⁽ʷᵉᵇ⁾')::replace('usenet','‍⁽ⁿᶻᵇ⁾‍')::replace('stremio-usenet','‏⁽ⁿᶻᵇ⁾')::replace('info','⁽ᶦⁿᶠᵒ⁾')::replace('statistic','⁽ˢᵗᵃᵗˢ⁾')::replace('external','⁽ᵉˣᵗ⁾')::replace('error','⁽ᵉʳʳᵒʳ⁾')::replace('youtube','⁽ʸᵗ⁾')}‍‍‍\"||\"\"]} {service.cached::istrue[\"⚡\"||\"\"]}{service.cached::isfalse[\"‍⏳‍​\"||\"\"]}{stream.quality::exists[\"‍‍{stream.quality::title::replace('Bluray Remux','ʀᴇᴍᴜx')::replace('Bluray','ʙʟᴜʀᴀʏ')::replace('Web-dl','ᴡᴇʙ‍-‍ᴅʟ')::replace('Hc Hd-rip','ʜᴄ ʜᴅʀɪᴘ')::replace('Hdrip','ʜᴅʀɪᴘ')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]} {stream.nSeScore::exists[\"‍{stream.nSeScore::star::replace('⯪','☆')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}",
+              "description": "{stream.title::exists::and::stream.library::isfalse[\"✎  {stream.title::title::truncate(15)}\"||\"\"]}{stream.title::exists::and::stream.library::istrue[\"☁︎  {stream.title::title::truncate(15)} \"||\"\"]}{stream.year::exists::and::stream.episodes::exists::isfalse::and::stream.seasons::exists::isfalse[\" ({stream.year})\"||\"\"]}{stream.seasonEpisode::exists[\"  {stream.seasonEpisode::join('·')::replace('E','ᴇ')::replace('S','s')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}\n{stream.visualTags::=IMAX[\"{tools.removeLine}\\n\"||\"{tools.removeLine}\\n\"]}{stream.encode::exists[\"▣  {stream.encode}  \"||\"\"]}{stream.visualTags::~DV::or::stream.visualTags::~HDR::or::stream.visualTags::~HDR10::or::stream.visualTags::~HDR10+::and::stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"✦  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse::and::stream.visualTags::~DV::isfalse::and::stream.visualTags::~HDR::isfalse::and::stream.visualTags::~HDR10::isfalse::and::stream.visualTags::~HDR10+::isfalse[\"✧  \"||\"\"]}{stream.visualTags::exists::and::stream.visualTags::=IMAX::isfalse[\"{stream.visualTags::sort::join(' · ')::replace('HDR · HDR','HDR')::replace(' · IMAX','')} \"||\"\"]} {stream.audioTags::exists[\"♬  {stream.audioTags::lsort::join(' · ')::replace('DD · DD','DD')::replace('DTS · DTS','DTS')}  \"||\"\"]}{stream.audioChannels::exists[\"♯  {stream.audioChannels::join(' · ')} \"||\"\"]}\n{stream.size::>0::and::stream.seasonPack::istrue[\"❖  \"||\"\"]}{stream.size::>0::and::stream.seasonPack::isfalse[\"◈  \"||\"\"]}{stream.size::>0[\"{stream.size::sbytes}\"||\"\"]}{stream.folderSize::>0[\"/{stream.folderSize::sbytes}\"||\"\"]}{stream.bitrate::exists[\" · {stream.bitrate::sbitrate::replace('Mbps','ᴹᵇᵖˢ')::replace('Kbps','ᴷᵇᵖˢ')} \"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::isfalse::or::stream.type::=p2p::and::stream.seeders::>0[\"⇄ {stream.seeders}❦ \"||\"\"]}{stream.age::exists[\"· {stream.age}\"||\"\"]}  {stream.proxied::istrue[\"⛊  \"||\"⛉  \"]}{service.shortName::exists[\"[{service.shortName}] \"||\"\"]}{addon.name}{stream.private::istrue[\" ⚿ ᴘʀɪᴠᴀᴛᴇ \"||\"\"]}{stream.releaseGroup::exists[\" · {stream.releaseGroup::truncate(13)}\"||\"\"]}{stream.indexer::exists::and::stream.type::~usenet[\" · {stream.indexer::truncate(13)}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\\n\"||\"\"]}\n{stream.uLanguages::exists[\"⛿  {stream.uSmallLanguageCodes::join(' · ')::replace('ꜰ','ғ')::replace('x','х')::replace('ꞯ','ϙ')::replace('ꜱ','s')::replace('ᴅᴜᴀʟ ᴀᴜᴅɪᴏ','ᴅᴜᴏ')::replace('ᴅᴜʙʙᴇᴅ','ᴅᴜʙ')}  \"||\"\"]}{stream.seadex::or::stream.seScore::>0::or::stream.seScore::<0::or::stream.message::exists::or::stream.rseMatched::length::>0[\" »  \"||\"\"]}{stream.seadexBest::istrue[\" ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ \"||\"\"]}{stream.seadex::istrue::and::stream.seadexBest::isfalse[\" ᴀʟᴛ ʙᴇsᴛ ʀᴇʟᴇᴀsᴇ\"||\"\"]}{stream.seadex::isfalse::and::stream.rseMatched::length::>0[\"{stream.rseMatched::remove('TrueHD ATMOS')::remove('DD+ ATMOS')::remove('ATMOS')::remove('TrueHD')::remove('DTS-HD MA')::remove('FLAC')::remove('DTS-HD HRA')::remove('DD+')::remove('DD')::remove('DTS-ES')::remove('DTS X')::remove('DTS')::remove('AAC')::remove('Opus')::remove('DV (Disk)')::remove('DV')::remove('HDR10+ Boost')::remove('HDR')::remove('UHD Streaming Boost')::remove('HD Streaming Boost')::remove('INTERNAL')::remove('No-RlsGroup')::remove('FHD')::remove('UHD ')::remove('UHD')::remove('HD ')::remove('HD')::remove('4K')::remove('126811')::remove('SiC')::remove('FraMeSToR')::remove('TheFarm')::remove('hallowed')::remove('BHDStudio')::remove('FLUX')::join('  ')::replace('Movies Anywhere','MA')::upper::replace('F','ғ')::replace('X','х')::replace('Q','ϙ')::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')::smallcaps::replace('ꜱ','s')} \"||\"\"]}{stream.message::exists[\" {stream.message::replace('NZB Health: ✅','☑ ɴᴢʙ')::replace('NZB Health: 🧝','☑ ᴇʟғ ɴᴢʙ')::replace('NZB Health: ⚠️','ᴜɴᴠᴇʀɪғɪᴇᴅ ɴᴢʙ')::replace('NZB Health: 🚫','✘ɴᴢʙ')::smallcaps} \"||\"\"]}{stream.seScore::>0::or::stream.seScore::<0[\"{stream.seScore::string::replace('0','₀')::replace('1','₁')::replace('2','₂')::replace('3','₃')::replace('4','₄')::replace('5','₅')::replace('6','₆')::replace('7','₇')::replace('8','₈')::replace('9','₉')}\"||\"\"]}{stream.message::~Download[\"{tools.removeLine}\"||\"\"]}{service.cached::istrue::and::stream.message::~Download::istrue[\"\\n➥ DL Stream\"||\"\"]}"
             }
           },
           "retain": {
