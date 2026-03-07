@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.10 (2026-03-07)
+ - New feat: Bitrate Options Submenu: Bitrate Limit
+    - Check out [Avangelista's PR](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting/pull/12) for more details
+    - `Low Bitrate Ranking Boost` deprioritizes streams outside bitrate limit via PSE
+    - `Low Bitrate Sorting Boost` sorts bitrate within same resolution/quality category from lowest to highest
+
 ## 2.0.9 (2026-03-05)
 
 - Update: Service wrap is now enabled only for Torrentio. This prevents Torrentio from returning results when the Torrentio service is down.
