@@ -101,7 +101,7 @@ FEATURED_TEMPLATE_IDS=tamtaro.complete,Vidhin05.english-template
 1. **Choose an AIOStreams instance**: Nightly is recommended but not required. #links for options.
    - **Selfhosters**: Ensure `SEL_SYNC_ACCESS=all` is set in your environment variables to receive latest SEL-related hotfixes automatically.
 2. **Import Template**: Paste this URL into *AIOStreams → Save & Install :floppy_disk: → Import Template*:
-   `https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/main/Tamtaro-All-Templates-for-AIOStreams.json`
+   `https://git.tamtaro.de/complete.json`
    - **Confirm Import** to save the templates. Most public instances should already have template.
    - Start with **"Tamtaro Complete SEL Setup"** (works for both Debrid/Usenet or P2P).
    - Follow the prompts to personalize your filtering, services, and credentials. Leave all options default to get my recommended setup.
