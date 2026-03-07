@@ -571,43 +571,61 @@
           ]
         },
         {
-          "id": "bitrateCap",
-          "name": "Bitrate Limit (Mbps)",
-          "description": "Select your desired bitrate limit. Streams exceeding 80% of this limit at 4K, 50% at 1080P and 30% at 720P will be removed.",
-          "type": "select",
-          "required": false,
+          "id": "bitrate",
+          "name": "Bitrate Options",
+          "description": "Configure low bitrate settings for stream filtering, ranking, and sorting.",
+          "type": "subsection",
           "advanced": true,
-          "default": "150",
-          "options": [
+          "required": false,
+          "subOptions": [
             {
-              "value": "10",
-              "label": "<10 Mbps (Data saver)"
+              "id": "bitrateCap",
+              "name": "Bitrate Limit (Mbps)",
+              "description": "Select your desired bitrate limit. Streams exceeding 80% of this limit at 4K, 50% at 1080P and 30% at 720P will be removed.",
+              "type": "select",
+              "required": false,
+              "advanced": true,
+              "default": "150",
+              "options": [
+                {
+                  "value": "10",
+                  "label": "<10 Mbps (Data saver)"
+                },
+                {
+                  "value": "25",
+                  "label": "25 Mbps"
+                },
+                {
+                  "value": "50",
+                  "label": "50 Mbps"
+                },
+                {
+                  "value": "100",
+                  "label": "100 Mbps"
+                },
+                {
+                  "value": "150",
+                  "label": ">150 Mbps (Uncapped)"
+                }
+              ]
             },
-            {
-              "value": "25",
-              "label": "25 Mbps"
+            { "id": "bitrateBoostRank",
+              "name": "Low Bitrate Ranking Boost",
+              "description": "Instead of removing high-bitrate streams, this option prioritizes streams within bitrate limit by boosting their ranking in preferred stream expressions. Within each Resolution/Quality category, large files are pushed to the bottom of the result list and only kept as backup options if lower bitrate options are few or unavailable.",
+              "type": "boolean",
+              "required": false,
+              "advanced": true,
+              "default": false
             },
-            {
-              "value": "50",
-              "label": "50 Mbps"
-            },
-            {
-              "value": "100",
-              "label": "100 Mbps"
-            },
-            {
-              "value": "150",
-              "label": ">150 Mbps (Uncapped)"
+            { "id": "bitrateBoostSort",
+              "name": "Low Bitrate Sorting Boost",
+              "description": "If selected, streams will be sorted within each Resolution/Quality category based on their bitrate, lowest to highest. A selection in Bitrate Limit is required to enable this feature.",
+              "type": "boolean",
+              "required": false,
+              "advanced": true,
+              "default": false
             }
           ]
-        },
-        { "id": "bitrateBoost",
-          "name": "Low Bitrate Boost",
-          "description": "Instead of removing high-bitrate streams, this option prioritizes streams that fit bitrate limit by boosting their ranking in preferred stream expressions. Within each Resolution/Quality category, large files are pushed to the bottom of the result list and kept as backup options if low bitrate options are few or unavailable.",
-          "type": "boolean",
-          "required": false,
-          "advanced": true,
-          "default": false
         },
         {
           "id": "passthrough",
@@ -1533,8 +1551,8 @@
           "enabled": true
         },
         {
-          "__if": "inputs.bitrateCap != 150 and !inputs.bitrateBoost",
-          "expression": "/*Bitrate Hardcap: {{inputs.bitrateCap}} Mbps*/ merge(bitrate(resolution(streams, '2160p'), '{{inputs.bitrateCap}}'*0.8*1000000), bitrate(resolution(streams, '1080p'), {{inputs.bitrateCap}}'*0.5*1000000), bitrate(resolution(streams, '720p'), {{inputs.bitrateCap}}'*0.3*1000000))",
+          "__if": "inputs.bitrate.bitrateCap != 150 and !inputs.bitrate.bitrateBoostRank",
+          "expression": "/*Bitrate Hardcap: {{inputs.bitrate.bitrateCap}} Mbps*/ merge(bitrate(resolution(streams, '2160p'), '{{inputs.bitrate.bitrateCap}}'*0.8*1000000), bitrate(resolution(streams, '1080p'), {{inputs.bitrate.bitrateCap}}'*0.5*1000000), bitrate(resolution(streams, '720p'), {{inputs.bitrate.bitrateCap}}'*0.3*1000000))",
           "enabled": true
         },
         {
@@ -1566,8 +1584,8 @@
       ],
       "preferredStreamExpressions": [
         {
-          "__if": "inputs.bitrateCap != 150 and inputs.bitrateBoost",
-          "expression": "/*Low Bitrate Boost*/ merge(bitrate(resolution(streams, '2160p'), 1, '{{inputs.bitrateCap}}'*0.8*1000000), bitrate(resolution(streams, '1080p'), 1, '{{inputs.bitrateCap}}'*0.5*1000000), bitrate(resolution(streams, '720p'), 1, '{{inputs.bitrateCap}}'*0.3*1000000))",
+          "__if": "inputs.bitrate.bitrateCap != 150 and inputs.bitrate.bitrateBoostRank",
+          "expression": "/*Low Bitrate Ranking Boost*/ merge(bitrate(resolution(streams, '2160p'), 1, '{{inputs.bitrate.bitrateCap}}'*0.8*1000000), bitrate(resolution(streams, '1080p'), 1, '{{inputs.bitrate.bitrateCap}}'*0.5*1000000), bitrate(resolution(streams, '720p'), 1, '{{inputs.bitrate.bitrateCap}}'*0.3*1000000))",
           "enabled": true
         },
         {
@@ -1670,6 +1688,10 @@
                 "key": "library",
                 "direction": "desc"
               },
+              { "__if": "inputs.bitrate.bitrateCap != 150 and inputs.bitrate.bitrateBoostSort",
+                "key": "bitrate",
+                "direction": "asc"
+              },
               {
                 "__if": "services and inputs.sorting.selScore == default or !services and inputs.sortingP2P.selScore == default",
                 "key": "streamExpressionScore",
@@ -1697,7 +1719,7 @@
                 "key": "encode",
                 "direction": "desc"
               },
-              {
+              { "__if": "inputs.bitrate.bitrateCap == 150",
                 "key": "bitrate",
                 "direction": "desc"
               },
@@ -1757,6 +1779,10 @@
                 "key": "streamExpressionMatched",
                 "direction": "desc"
               },
+              { "__if": "inputs.bitrate.bitrateCap != 150 and inputs.bitrate.bitrateBoostSort",
+                "key": "bitrate",
+                "direction": "asc"
+              },
               {
                 "__if": "services and inputs.sorting.selScore == default or !services and inputs.sortingP2P.selScore == default",
                 "key": "streamExpressionScore",
@@ -1784,7 +1810,7 @@
                 "key": "encode",
                 "direction": "desc"
               },
-              {
+              { "__if": "inputs.bitrate.bitrateCap == 150",
                 "key": "bitrate",
                 "direction": "desc"
               },
@@ -1836,6 +1862,10 @@
               "key": "streamExpressionMatched",
               "direction": "desc"
             },
+            { "__if": "inputs.bitrate.bitrateCap != 150 and inputs.bitrate.bitrateBoostSort",
+              "key": "bitrate",
+              "direction": "asc"
+            },
             {
               "__if": "inputs.sorting.selScore == default",
               "key": "streamExpressionScore",
@@ -1862,7 +1892,7 @@
               "key": "encode",
               "direction": "desc"
             },
-            {
+            { "__if": "inputs.bitrate.bitrateCap == 150",
               "key": "bitrate",
               "direction": "desc"
             }
