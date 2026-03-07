@@ -1,14 +1,14 @@
 [
   {
-    "expression": "/*Part of Tamtaro SEL Setup/*[]",
+    "expression": "/*Part of Tamtaro SEL Setup*/[]",
     "enabled": true
   },
   {
-    "expression": "/*Extended ESE v1.1.0/*[]",
+    "expression": "/*Extended ESE v1.1.0*/[]",
     "enabled": true
   },
   {
-    "expression": "/*git.tamtaro.de*[]",
+    "expression": "/*git.tamtaro.de*/[]",
     "enabled": true
   },
   {
