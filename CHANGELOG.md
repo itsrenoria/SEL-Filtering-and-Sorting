@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.1.0 (2026-03-07)
+
  - New: quick links for SEL content
     - SEL Setup
        - https://git.tamtaro.de (Main GitHub)
@@ -28,6 +29,7 @@
     - Debrid/Usenet will remain Cached + Uncached
 
 ## 2.0.10 (2026-03-07)
+
  - New/Update: Bitrate Options Submenu: Bitrate Limit
     - Check out [Avangelista's PR](https://github.com/Tam-Taro/SEL-Filtering-and-Sorting/pull/12) for more details
     - `Low Bitrate Ranking Boost` deprioritizes streams outside bitrate limit via PSE
