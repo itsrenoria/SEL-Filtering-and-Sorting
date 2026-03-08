@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.2 (2026-03-07)
+
+ - Fixed: previously added Searchⁿᶻᵇ(Torbox) addon will now be removed in future re-importing of template when Torbox Service is not selected
+ - Minor: Edited some headers and description to organize template menu better
+
 ## 2.1.1 (2026-03-07)
 
  - Fixed: bitrate cap SEL now working
