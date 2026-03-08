@@ -4,7 +4,7 @@
     "enabled": true
   },
   {
-    "expression": "/*ISE v1.1.0*/[]",
+    "expression": "/*ISE v1.1.1*/[]",
     "enabled": true
   },
   {
@@ -12,7 +12,7 @@
     "enabled": true
   },
   {
-    "expression": "/*SeaDex*/merge(count(addon(cached(streams),'SeaDex'))>0?passthrough(addon(streams,'SeaDex'),'filter','title','year'):passthrough(seadex(streams),'filter','title','year'),queryType=='anime.movie'?passthrough(seadex(streams),'episode'):[])",
+    "expression": "/*SeaDex*/merge(count(addon(cached(streams),'SeaDex'))>0?passthrough(addon(streams,'SeaDex'),'title','year'):passthrough(seadex(streams),'filter','title','year'),queryType=='anime.movie'?passthrough(seadex(streams),'episode'):[])",
     "enabled": true
   },
   {
