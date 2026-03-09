@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.1.5 (2026-03-09)
- - Update: Added *HDR10+ Only* into `Device Specific Exclusions` for playback issues on some older TLC TVs
+ - Update: Added *HDR10+ Only* into `Device Specific Exclusions` for playback issues on some older TLC TVs + Firestick
 
 ## 2.1.4 (2026-03-09)
 
