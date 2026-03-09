@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.5 (2026-03-09)
+ - Update: Added *HDR10+ Only* into `Device Specific Exclusions`
+
 ## 2.1.4 (2026-03-09)
 
  - New: Added new multi-select `Device Specific Exclusions` for streams your device can't handle
