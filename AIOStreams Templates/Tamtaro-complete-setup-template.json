@@ -5,7 +5,7 @@
     "description": "Fully configurable all-in-one setup based on Tamtaro's recommended filters, sort orders, and SELs described on the [GitHub](https://git.tamtaro.de). One template for both Debrid/Usenet or P2P users. \n\n * Guides you through API keys, language preferences, optional filters and smart passthroughs during import.\n * Comes with optional addons and optional formatter. \n * Dynamic core filtering options: Standard SEL (keeps ~20 results) or Extended SEL (keeps ~40).\n * Comes with auto-synced urls for SELs & [Vidhin's Regexes](https://github.com/Vidhin05/Releases-Regex) so you'll receive latest SEL hotfixes automatically. Set & forget.\n * **ⓘ For catalogs, check out GitHub for AIOMetadata configs.**",
     "source": "external",
     "author": "Tamtaro",
-    "version": "2.1.3",
+    "version": "2.1.4",
     "category": "AIO",
     "serviceRequired": false,
     "changelogUrl": "https://raw.githubusercontent.com/Tam-Taro/SEL-Filtering-and-Sorting/refs/heads/main/CHANGELOG.md",
@@ -13,7 +13,7 @@
       {
         "__if": "services",
         "id": "header.intro",
-        "name": "Complete SEL Setup v2.1.3: Debrid/Usenet Mode",
+        "name": "Complete SEL Setup v2.1.4: Debrid/Usenet Mode",
         "description": "An advanced filtering & sorting setup powered by Stream Expression Language (SEL) & [Vidhin's Regex Patterns](https://github.com/Vidhin05/Releases-Regex)",
         "type": "alert",
         "intent": "success"
@@ -21,7 +21,7 @@
       {
         "__if": "!services",
         "id": "header.p2p",
-        "name": "Complete SEL Setup v2.1.3: P2P Mode",
+        "name": "Complete SEL Setup v2.1.4: P2P Mode",
         "description": "No services selected. In some countries, torrenting is restricted,so a VPN or a debrid service from previous page may be required.",
         "type": "alert",
         "intent": "warning"
@@ -695,71 +695,11 @@
           {
             "id": "timeout",
             "name": "Global Timeout",
-            "description": "Enter the time in ms you're willing to wait for results before your add-ons timeout. Default: 7000 ms.",
+            "description": "Enter the time in ms you're willing to wait for results before your add-ons timeout. Default: 5000 ms.",
             "type": "number",
             "required": false,
             "advanced": true,
-            "default": 7000
-          }
-        ]
-      },
-      {
-        "id": "ExcludeVisualTags",
-        "name": "Excluded Visual Tags",
-        "description": "By defaults, AI and 3D visual tags are excluded. If your device does not support DV, select 'DV Only' to exclude all DV streams with no HDR fallbacks. You will remove all HDR+DV streams if you simply exclude 'DV'.",
-        "type": "multi-select",
-        "required": false,
-        "advanced": true,
-        "default": [
-          "AI",
-          "3D",
-          "H-OU",
-          "H-SBS"
-        ],
-        "options": [
-          {
-            "value": "DV Only",
-            "label": "DV Only"
-          },
-          {
-            "value": "DV",
-            "label": "DV"
-          },
-          {
-            "value": "HDR",
-            "label": "HDR"
-          },
-          {
-            "value": "HDR10",
-            "label": "HDR10"
-          },
-          {
-            "value": "HDR10+",
-            "label": "HDR10+"
-          },
-          {
-            "value": "HDR+DV",
-            "label": "HDR+DV"
-          },
-          {
-            "value": "IMAX",
-            "label": "IMAX"
-          },
-          {
-            "value": "3D",
-            "label": "3D"
-          },
-          {
-            "value": "H-OU",
-            "label": "3D OU"
-          },
-          {
-            "value": "H-SBS",
-            "label": "3D SBS"
-          },
-          {
-            "value": "AI",
-            "label": "AI"
+            "default": 5000
           }
         ]
       },
@@ -972,21 +912,17 @@
         ]
       },
       {
-        "id": "optionalFilters",
-        "name": "Optional SELs",
-        "description": "**☑ NZB Only**: keeps only health-checked Zyclops/UsenetStreamer results, removes rest. **DV Profile 5**: removes DV Only Non-Remux streams. **4K Remux or 1080p Remux**: removes 1080p or 4k Remux due to device compatability or file size.",
+        "id": "deviceExclude",
+        "name": "Device Specific Exclusions",
+        "description": "Some LG TVs can't play *any Remux*, *TrueHD*, or *DTS* audio. Some Samsung TVs can't play *DTS* audio. Some devices can't play *DV-Only Non-Remux* (DV P5). Some devices can't play *any 4K* streams. Select appropriate exclusions right here, and not inside AIOS UI filter because these removals need to happen at specific stage in the SEL filering process to allow various fake/upscaled detection filters to work effectively.",
         "type": "multi-select",
         "required": false,
         "advanced": true,
         "default": [],
         "options": [
           {
-            "value": "nzbOnly",
-            "label": "☑ NZB-Only"
-          },
-          {
-            "value": "dvOnlyNonRemux",
-            "label": "DV Profile 5"
+            "value": "4k",
+            "label": "All 4K"
           },
           {
             "value": "4kRemux",
@@ -994,7 +930,31 @@
           },
           {
             "value": "1080pRemux",
-            "label": "1080p Remux"
+            "label": "1080P Remux"
+          },
+          {
+            "value": "720pRemux",
+            "label": "720P Remux"
+          },
+          {
+            "value": "trueHD",
+            "label": "TrueHD Audio"
+          },
+          {
+            "value": "dts",
+            "label": "DTS"
+          },
+          {
+            "value": "DVonly",
+            "label": "DV-Only"
+          },
+          {
+            "value": "HDR",
+            "label": "HDR"
+          },
+          {
+            "value": "dvOnlyNonRemux",
+            "label": "DV-Only Non-Remux"
           }
         ]
       },
@@ -1399,8 +1359,8 @@
         "subOptions": [
           {
             "id": "usenetHealth",
-            "name": "Health-Checked Usenet Passthrough",
-            "description": "**☑ NZB Passthrough**: allows all health-checked Zyclops/UsenetStreamer usenet to bypass SEL filters. **☑ NZB-Only Passthrough**: allows all health-checked usenet to bypass SEL filters *and* removes all non-health-checked usenet.",
+            "name": "Health-☑ NZB Passthrough",
+            "description": "**☑ NZB Passthrough**: allows all health-☑ Zyclops/UsenetStreamer usenet to bypass SEL filters. **☑ NZB-Only Passthrough**: allows all health-☑ usenet to bypass SEL filters *and* removes all without health-☑.",
             "type": "select",
             "required": false,
             "default": "none",
@@ -1411,11 +1371,11 @@
               },
               {
                 "value": "Checkednzb",
-                "label": "☑ NZB "
+                "label": "☑ NZB Passthrough"
               },
               {
                 "value": "CheckednzbOnly",
-                "label": "☑ NZB-Only"
+                "label": "☑ NZB-Only Passthrough"
               }
             ]
           },
@@ -1594,7 +1554,7 @@
           {
             "id": "visualTag",
             "name": "Top 5 DV+HDR, 5 HDR Only, 5 SDR",
-            "description": "From the remaining results after Standard/SEL, this will keep up to 5 DV/HDR, 5 HDR Only and 5 non-DV/HDR streams (passthrough, library and SeaDex exempted). Rest will be removed. Pair this option with 'Exclude Visual Tags' option if you only want a few results in HDR or SDR.",
+            "description": "From the remaining results after Standard/SEL, this will keep up to 5 DV/HDR, 5 HDR Only and 5 non-DV/HDR streams (passthrough, library and SeaDex exempted). Rest will be removed. Pair this option with visual tag exclusion options if you only want results in HDR or SDR.",
             "type": "boolean",
             "required": false,
             "default": false
@@ -1624,7 +1584,7 @@
       {
         "id": "keepScore",
         "name": "Keep Custom SEL Edits",
-        "description": "Select this option to prevent custom edits to synced urls SEL or regex from being overwritten with default values. Leave it unchecked to benefit from Vidhin's default SEL scores, which are designed to work well with this template. 4k/1080P Remux Filters will not work if you enable this option, since they rely on synced ESE edits.",
+        "description": "Select this option to prevent custom edits to synced urls SEL or regex from being overwritten with default values. Leave it unchecked to benefit from Vidhin's default SEL scores, which are designed to work well with this template. If you enable this option, *Device Specific Exclusions* above will not work, so you'll need to enable them manually within synced ESE.",
         "type": "boolean",
         "required": false,
         "advanced": true,
@@ -1706,7 +1666,7 @@
       },
       "default": "{{inputs.addonName}}"
     },
-    "addonDescription": "Custom AIOStreams powered by Tamtaro SEL Setup v2.1.3. Features advanced filtering with Stream Expression Language and smart sorting with Vidhin's Regex Patterns. Your personal all-in-one setup for the perfect Stremio experience.",
+    "addonDescription": "Custom AIOStreams powered by Tamtaro SEL Setup v2.1.4. Features advanced filtering with Stream Expression Language and smart sorting with Vidhin's Regex Patterns. Your personal all-in-one setup for the perfect Stremio experience.",
     "addonLogo": "https://github.com/Tam-Taro/SEL-Filtering-and-Sorting/blob/main/logo.png?raw=true",
     "excludedResolutions": [],
     "includedResolutions": [],
@@ -1760,7 +1720,9 @@
       "Unknown"
     ],
     "excludedVisualTags": [
-      "{{inputs.ExcludeVisualTags}}"
+      "3D",
+      "H-OU",
+      "H-SBS"
     ],
     "includedVisualTags": [],
     "requiredVisualTags": [],
@@ -1888,7 +1850,7 @@
     "excludedStreamExpressions": [
       {
         "__if": "inputs.coreFilter includes extended",
-        "expression": "/*𝚃𝚊𝚖𝚝𝚊𝚛𝚘 𝙲𝚘𝚖𝚙𝚕𝚎𝚝𝚎 𝚂𝙴𝙻 𝚂𝚎𝚝𝚞𝚙 𝚟2.1.3: 𝙴𝚡𝚝𝚎𝚗𝚍𝚎𝚍 𝚂𝙴𝙻 𝚏𝚒𝚕𝚝𝚎𝚛𝚒𝚗𝚐 𝚎𝚗𝚐𝚒𝚗𝚎*/ []",
+        "expression": "/*𝚃𝚊𝚖𝚝𝚊𝚛𝚘 𝙲𝚘𝚖𝚙𝚕𝚎𝚝𝚎 𝚂𝙴𝙻 𝚂𝚎𝚝𝚞𝚙 𝚟2.1.4: 𝙴𝚡𝚝𝚎𝚗𝚍𝚎𝚍 𝚂𝙴𝙻 𝚏𝚒𝚕𝚝𝚎𝚛𝚒𝚗𝚐 𝚎𝚗𝚐𝚒𝚗𝚎*/ []",
         "enabled": true
       },
       {
@@ -1897,12 +1859,7 @@
       },
       {
         "__if": "inputs.coreFilter includes standard",
-        "expression": "/*𝚃𝚊𝚖𝚝𝚊𝚛𝚘 𝙲𝚘𝚖𝚙𝚕𝚎𝚝𝚎 𝚂𝙴𝙻 𝚂𝚎𝚝𝚞𝚙 𝚟2.1.3: 𝚂𝚝𝚊𝚗𝚍𝚊𝚛𝚍 SEL filtering engine*/ []",
-        "enabled": true
-      },
-      {
-        "__if": "inputs.optionalFilters includes nzbOnly",
-        "expression": "/*☑ ɴᴢʙ-Only*/ negate(message(type(streams, 'usenet', 'stremio-usenet'),'includes','✅','🧝'), type(streams, 'usenet', 'stremio-usenet'))",
+        "expression": "/*𝚃𝚊𝚖𝚝𝚊𝚛𝚘 𝙲𝚘𝚖𝚙𝚕𝚎𝚝𝚎 𝚂𝙴𝙻 𝚂𝚎𝚝𝚞𝚙 𝚟2.1.4: 𝚂𝚝𝚊𝚗𝚍𝚊𝚛𝚍 SEL filtering engine*/ []",
         "enabled": true
       },
       {
@@ -1913,11 +1870,6 @@
       {
         "__if": "inputs.usenet.usenetHealth includes CheckednzbOnly",
         "expression": "/*☑ ɴᴢʙ-Only Passthrough*/ merge(negate(message(streams,'includes','✅','🧝'), type(streams, 'usenet', 'stremio-usenet')), passthrough(message(type(streams, 'usenet', 'stremio-usenet'),'includes','✅','🧝'), 'excluded', 'required'))",
-        "enabled": true
-      },
-      {
-        "__if": "inputs.optionalFilters includes dvOnlyNonRemux",
-        "expression": "/*DV Only Non-Remux*/ isAnime?[]:negate(merge(quality(streams,'BluRay REMUX'),releaseGroup(streams, 'Flights'),regexMatched(streams, 'Hulu')),visualTag(streams,'DV Only'))",
         "enabled": true
       },
       {
@@ -2072,15 +2024,19 @@
         "enabled": true
       }
     ],
-    "regexOverrides": {
-      "__if": "!inputs.keepScore",
-      "__value": []
-    },
     "selOverrides": {
       "__if": "!inputs.keepScore",
       "__value": [
         {
-          "__if": "inputs.optionalFilters includes 4kRemux",
+          "__if": "inputs.deviceExclude includes 4k",
+          "expression": "/*No 4K*/ resolution(streams,'2160p')",
+          "exprNames": [
+            "No 4K"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes 4kRemux",
           "expression": "/*No 4K Remux*/ quality(resolution(streams,'2160p'),'Bluray REMUX')",
           "exprNames": [
             "No 4K Remux"
@@ -2088,10 +2044,58 @@
           "disabled": false
         },
         {
-          "__if": "inputs.optionalFilters includes 1080pRemux",
+          "__if": "inputs.deviceExclude includes 1080pRemux",
           "expression": "/*No 1080P Remux*/ quality(resolution(streams,'1080p'),'Bluray REMUX')",
           "exprNames": [
             "No 1080P Remux"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes 720pRemux",
+          "expression": "/*No 720P Remux*/ quality(resolution(streams,'720p'),'Bluray REMUX')",
+          "exprNames": [
+            "No 720P Remux"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes trueHD",
+          "expression": "/*No TrueHD*/ audioTag(streams, 'TrueHD')",
+          "exprNames": [
+            "No TrueHD"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes dts",
+          "expression": "/*No DTS*/ audioTag(streams, 'DTS:X', 'DTS-ES', 'DTS-HD MA', 'DTS-HD', 'DTS')",
+          "exprNames": [
+            "No DTS"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes DVonly",
+          "expression": "/*No DV-Only*/ visualTag(streams,'DV Only')",
+          "exprNames": [
+            "No DV-Only"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes HDR",
+          "expression": "/*No HDR*/ visualTag(streams, 'HDR', 'HDR10','HDR10+')",
+          "exprNames": [
+            "No HDR"
+          ],
+          "disabled": false
+        },
+        {
+          "__if": "inputs.deviceExclude includes dvOnlyNonRemux",
+          "expression": "/*No DV-Only Non-Remux*/ isAnime?[]:negate(merge(quality(streams,'BluRay REMUX'),releaseGroup(streams, 'Flights'),regexMatched(streams, 'Hulu')),visualTag(streams,'DV Only'))",
+          "exprNames": [
+            "No DV-Only Non-Remux"
           ],
           "disabled": false
         }
@@ -2464,7 +2468,8 @@
       "position": "bottom",
       "statsToShow": [
         "addon",
-        "filter"
+        "filter",
+        "timing"
       ]
     },
     "tmdbApiKey": "<template_placeholder>",
@@ -3111,6 +3116,10 @@
           "4ef"
         ]
       }
+    },
+    "nzbFailover": {
+      "enabled": true,
+      "position": "beforeSEL"
     }
   }
 }
