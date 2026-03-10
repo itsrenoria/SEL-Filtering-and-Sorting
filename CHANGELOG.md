@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.6 (2026-03-09)
+ - Update: Added *DV (ALL)* into `Device Specific Exclusions` for devices that can't use HDR fallback
+ - Update: Custom option for Bitrate Limit, to enter your custom number outside the 5 options
+
 ## 2.1.5 (2026-03-09)
  - Update: Added *HDR10+ Only* into `Device Specific Exclusions` for playback issues on some older TLC TVs + Firestick
 
