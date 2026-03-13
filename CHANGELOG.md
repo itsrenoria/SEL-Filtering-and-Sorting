@@ -3,7 +3,7 @@
 ## 2.1.8 (2026-03-13)
 
 - Fix: missing `)` in Usenet Boost SELs, causing it not to save config
-- Fix: misidentified minimalistic formatter, causing selection to do nothing
+- Fix: misidentified minimalist formatter, causing selection to do nothing
 
 ## 2.1.7 (2026-03-13)
 
