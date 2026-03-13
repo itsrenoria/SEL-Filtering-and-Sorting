@@ -13,7 +13,9 @@
   - Solves report of SeaDex results disappearing when using optional Usenet Sorting Boost
 - New: `Ignore RSE` to prevent your Ranked Stream Expression entries from being overwritten
   - All misc options now belong in its own submenu
-- Formatter: further hide rseMatched `UHD` and `HD` portion in eg., `UHD Remux T1` from default & AppleTV format
+- Formatter:
+  - New `Tamtaro (Minimalist)`, further stripped down view of default. Added to both Complete/Partial template.
+  - Default & AppleTV format: now hides rseMatched `UHD` and `HD` portion in eg., `UHD Remux T1`
   
 ## 2.1.6 (2026-03-09)
  - Update: Added *DV (ALL)* into `Device Specific Exclusions` for devices that can't use HDR fallback
