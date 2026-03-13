@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.9 (2026-03-13)
+
+- Fix: fixed Usenet Cached Sorting Boost specifically
+
 ## 2.1.8 (2026-03-13)
 
 - Fix: missing `)` in Usenet Boost SELs, causing it not to save config
