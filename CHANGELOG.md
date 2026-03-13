@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.7 (2026-03-12)
+
+- Update: Reworked filtering logic & sequencing
+  - When any additional SEL is selected, 3 "fake filtering SELs" (`Bad 4k Anime`, `Upscaled 4k` and `Bad 1080P Bluray`) are disabled in synced url ESE, and get placed into top spots of regular ESE field.
+  - Ensures fake filters run before any additional filtering that may affect its functionality (such as removing Remux or DV)
+  - All Device Specific Exclusions will now run right after the 3 fake filters, follows by any language passthroughs, follows by any visual tags passthroughs
+  - Lastly, rest of synced url ESE (minus the fake filters as are they are disabled here) will run, then follows by any Limiting SELs (which will run inside Required)
+  - This order ensures your Remux/DV exclusion streams will not be included in your subsequent passthroughs.
+- Update: Language Passthrough now adds an additional IncludedSE to passthrough 'language' filter in case the passthrough language is not one of the preferred languages.
+- Update: Usenet Sorting Boost (merging cached/uncached usenet with debrid) now has an edited PSE to also merge cached library & SeaDex result
+  - Solves report of SeaDex results disappearing when using optional Usenet Sorting Boost
+- New: `Ignore RSE` to prevent your Ranked Stream Expression entries from being overwritten
+  - All misc options now belong in its own submenu
+  
 ## 2.1.6 (2026-03-09)
  - Update: Added *DV (ALL)* into `Device Specific Exclusions` for devices that can't use HDR fallback
  - Update: Custom option for Bitrate Limit, to enter your custom number outside the 5 options
