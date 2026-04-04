@@ -10,7 +10,7 @@
 - New: `Remove Unknown Resolution` and `Remove Unknown Quality` under a new "Core Filter Modifications" submenu 
   - Inspired by a request from @barabaz for cleaner results list
   - After the core filtering SEL finishes, you can now further remove any results with unknown resolutions or qualities (passthrough, SeaDex, library exempted).
-- New: Addons priority re-ordered & category labels added 
+- Update: Addons priority re-ordered & category labels added 
   - For Debrid, built-in addons (SeaDex, Library, Storz, Knaben, AnimeTosho) are prioritized over rest of addons due to metadata enhancement via media info from stremthru (resulting in more accurate metadata such as embedded subtitles).
 - Fix: Bug reported by @prosperity., the ordering of any additional SELs & fake filters (such as 4k upscaled) are now applied during every template import, so the fake filters work properly (flow logic first introduced in v2.1.7)
 - **Formatter**: 
