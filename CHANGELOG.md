@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.3.0 (2026-04-03)
+- New: Submenu buttons inside Template Wizard get a new look (no more ugly gear icons) 
+- New: `Unknown Bluray Audio` in Device Specific Exclusions. 
+  - If your TV can't play DTS audio for example, this prevents mislabeled Blurays from bypassing your filters.
+- New: `Top Resolution Only` inside Limit Options
+  - Inspired by a request from @Nomadtvx to the AIOStreams bot
+  - Gives you a clean list of only the highest resolution results
+- New: `Remove Unknown Resolution` and `Remove Unknown Quality` under a new "Core Filter Modifications" submenu 
+  - Inspired by a request from @barabaz for cleaner results list
+  - After the core filtering SEL finishes, you can now further remove any results with unknown resolutions or qualities (passthrough, SeaDex, library exempted).
+- New: Addons priority re-ordered & category labels added 
+  - For Debrid, built-in addons (SeaDex, Library, Storz, Knaben, AnimeTosho) are prioritized over rest of addons due to metadata enhancement via media info from stremthru (resulting in more accurate metadata such as embedded subtitles).
+- Fix: Bug reported by @prosperity., the ordering of any additional SELs & fake filters (such as 4k upscaled) are now applied during every template import, so the fake filters work properly (flow logic first introduced in v2.1.7)
+- **Formatter**: 
+  - `stream.subtitles` now incorporated into languages field, displaying only your preferred languages
+    - If subbed languages are found (from built in addons, newznabs, or Torrentio), the subbed languages will be listed inside () as so: `⛿ sᴜʙ (ᴇɴ)`. If subbed languages is not specified then you'll see the usual `sᴜʙ`. 
+ - Green, more visible `✅ ɴᴢʙ` added for healthy usenet, @fourpoint8 can be happy now. 
+- **Synced URLs update**: *(auto-updates)*
+  - Update to ESE v1.2.5: 
+    - `Remove Unknown Resolution` and `Remove Unknown Quality` added to the very end, as disabled. As mentioned above, these can be toggled on inside Template Wizard's "Core Filter Modifications" submenu 
+    - `Final Limit (All)` now factors in stremio-usenet results in making final decision on what is kept
+  - Update to ISE (v1.2.2):
+    - `0Cached` now also bypasses title matching for usenet results, when triggered on no cached results found
+- *To be added*: pin/passthrough for Usenet Streamer's Smart Play
+
 ## 2.2.0 (2026-03-21)
 
 - New: DV Bluray (P7) as an option for "Device Specific Exclusions" courtesy of Vidhin
