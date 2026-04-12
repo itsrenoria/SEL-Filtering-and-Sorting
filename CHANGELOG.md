@@ -15,7 +15,7 @@
 - Fix: Bug reported by @prosperity., the ordering of any additional SELs & fake filters (such as 4k upscaled) are now applied during every template import, so the fake filters work properly (flow logic first introduced in v2.1.7)
 - **Formatter**: 
   - `stream.subtitles` now incorporated into languages field, displaying only your preferred languages
-    - If subbed languages are found (from built in addons, newznabs, or Torrentio), the subbed languages will be listed inside () as so: `⛿ sᴜʙ (ᴇɴ)`. If subbed languages is not specified then you'll see the usual `sᴜʙ`. 
+    - If subbed languages are found (from built in addons, newznabs, Meteor or Torrentio), the subbed languages will be listed inside () as so: `⛿ sᴜʙ (ᴇɴ)`. If subbed languages is not specified then you'll see the usual `sᴜʙ`. 
  - Green, more visible `✅ ɴᴢʙ` added for healthy usenet, @fourpoint8 can be happy now. 
 - **Synced URLs update**: *(auto-updates)*
   - Update to ESE v1.2.5: 
@@ -24,6 +24,10 @@
   - Update to ISE (v1.2.2):
     - `0Cached` now also bypasses title matching for usenet results, when triggered on no cached results found
 - *To be added*: pin/passthrough for Usenet Streamer's Smart Play
+
+<img width="567" height="234" alt="image" src="https://github.com/user-attachments/assets/4bc86f1e-9751-4616-ad94-5efffdcffd57" />
+<img width="560" height="234" alt="image" src="https://github.com/user-attachments/assets/59aa7387-dcb3-432c-9f0b-6b59223f60e4" />
+
 
 ## 2.2.0 (2026-03-21)
 
