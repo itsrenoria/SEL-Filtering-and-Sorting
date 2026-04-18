@@ -4,7 +4,7 @@
     "enabled": true
   },
   {
-    "expression": "/*ISE v1.2.2* [git.tamtaro.de]*/[]",
+    "expression": "/*ISE v1.2.3* [git.tamtaro.de]*/[]",
     "enabled": true
   },
   {
@@ -16,11 +16,11 @@
     "enabled": true
   },
   {
-    "expression": "/*digitalRelease*/queryType=='movie' or queryType=='anime.movie'?passthrough(quality(streams,'CAM','TS','TC','SCR'),'digitalRelease') : []",
+    "expression": "/*digitalRelease Bypass*/queryType=='movie' or queryType=='anime.movie'? (count(passthrough(quality(streams,'CAM','TS','TC','SCR','WEBRip'),'digitalRelease')) > 15 ? passthrough(quality(streams,'CAM','TS','TC','SCR','WEBRip'),'digitalRelease') : passthrough(streams,'digitalRelease')) : []",
     "enabled": true
   },
   {
-    "expression": "/*0Cached*/count(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')))==0?passthrough(streams,'title'):[]",
+    "expression": "/*0Cached*/ count(merge(cached(streams), type(streams, 'p2p','http','usenet','stremio-usenet')))==0?passthrough(streams,'title'):[]",
     "enabled": true
   }
 ]
